@@ -69,8 +69,12 @@ def normalize_weather_columns(df:pd.DataFrame) -> pd.DataFrame:
     return df
 
 def drop_columns(df: pd.DataFrame, columns_names:list[str]) -> pd.DataFrame:
-    df = df.drop(columns=columns_names)
-    logging.info(f"\n Colunas {columns_names} removidas - {len(df.columns)} colunas restantes")
+    columns_to_drop = [col for col in columns_names if col in df.columns]
+    if columns_to_drop:
+        df = df.drop(columns=columns_to_drop)
+        logging.info(f"\n Colunas {columns_to_drop} removidas - {len(df.columns)} colunas restantes")
+    else:
+        logging.info(f"\n Nenhuma das colunas {columns_names} encontrada para remover")
     return df
 
 def rename_columns(df: pd.DataFrame, columns_names:dict[str, str]) -> pd.DataFrame:
